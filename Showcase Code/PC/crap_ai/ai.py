@@ -1,16 +1,29 @@
 import chess
 import chess.polyglot
 
-from . import tables
-from . import util
-
+import tables
+import util
+from uuid import uuid4
 
 class AI_AlphaBeta:
     INFINITE = 10000000
     PIECE_VALUES = [0, 100, 300, 330, 500, 900, INFINITE]
     boards_evaluated = 0
+    move_count = 0
+    opening = True
+    zobrist_hash = 0
+    hash_values = []
+    piece_hash_index = {'p': 0, 'r': 1} #UNFINISHED
 
     def __init__(self):
+        # One number for each piece at each square
+        # One number to indicate the side to move is black
+        # Four numbers to indicate the castling rights, though usually 16 (2^4) are used for speed
+        # Eight numbers to indicate the file of a valid En passant square, if any
+        for i in range(12*64):
+            self.hash_values.append((uuid4().int >> 64))
+
+        self.zobrist_hash = (self.hash_values[0])
         pass
 
     def get_move(self, board, depth):
@@ -19,7 +32,8 @@ class AI_AlphaBeta:
 
         moves = list(board.legal_moves)
         # print(moves)
-        # moves = self.order_moves(board, moves)
+        moves = self.order_moves(board, moves)
+        # print(moves)
         best_move = None
 
         for move in board.legal_moves:
@@ -74,7 +88,7 @@ class AI_AlphaBeta:
         return value
 
     def test_openings(self, board):
-        with chess.polyglot.open_reader("data/polyglot/performance.bin") as reader:
+        with chess.polyglot.open_reader("data/polyglot/Perfect2017.bin") as reader:
             for entry in reader.find_all(board):
                 print(entry.move, entry.weight, entry.learn)
 

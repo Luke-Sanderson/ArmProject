@@ -16,14 +16,14 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
     #   "\n" +
     #   self.requestline +
     #   "\n"
- """BR BN BB BQ BK BB BR BR
-    BP BP BP BP .. BP BP BP
-    .. .. .. .. .. .. .. ..
-    .. .. .. WP BP .. .. ..
+ """BR BN BB BQ BK BB BN BR
+    BP BP BP BP BP BP BP BP
     .. .. .. .. .. .. .. ..
     .. .. .. .. .. .. .. ..
-    WP WP WP .. WP WP WP WP
-    WR WN WB .. WK WB WN WR"""
+    .. .. .. .. .. .. .. ..
+    .. .. .. .. .. .. .. ..
+    WP WP WP WP WP WP WP WP
+    WR WN WB WQ WK WB WN WR"""
       , 'utf8')
 
     # Send headers
