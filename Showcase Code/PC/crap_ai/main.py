@@ -9,6 +9,15 @@ alphabeta_ai = ai.AI_AlphaBeta()
 
 #web server
 board = chess.Board(convert_to_fen(read_board_network()))
+# start_board ="""BR BN BB BQ BK BB BN BR
+# BP BP BP BP BP BP BP BP
+# .. .. .. .. .. .. .. ..
+# .. .. .. .. .. .. .. ..
+# .. .. .. .. .. .. .. ..
+# .. .. .. .. .. .. .. ..
+# WP WP WP WP WP WP WP WP
+# WR WN WB WQ WK WB WN WR"""
+# board = chess.Board(convert_to_fen(start_board))
 print(board)
 print("================================")
 
