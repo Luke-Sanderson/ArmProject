@@ -20,11 +20,45 @@ class AI_AlphaBeta:
         # One number to indicate the side to move is black
         # Four numbers to indicate the castling rights, though usually 16 (2^4) are used for speed
         # Eight numbers to indicate the file of a valid En passant square, if any
-        for i in range(12*64):
+        for i in range(12*64 + 1 + 4 + 8):
             self.hash_values.append((uuid4().int >> 64))
 
-        self.zobrist_hash = (self.hash_values[0])
+        #Squares are counted from bottom left to otop right
+        #Order of hashes: W/B Pawns, W/B Knight, W/B Bishop, W/B Rook, W/B Queen, W/B King
+        self.zobrist_hash = 0;
+        for i in range(8): #Pawns
+            self.zobrist_hash ^= self.hash_values[0 * 64 + 1 * 8 + i]
+        for i in range(8): #Pawns
+            self.zobrist_hash ^= self.hash_values[1 * 64 + 6 * 8 + i]
+
+        self.zobrist_hash ^= self.hash_values[2 * 64 + 0 * 8 + 1] #Knights
+        self.zobrist_hash ^= self.hash_values[2 * 64 + 0 * 8 + 6]
+        self.zobrist_hash ^= self.hash_values[3 * 64 + 7 * 8 + 1]
+        self.zobrist_hash ^= self.hash_values[3 * 64 + 7 * 8 + 6]
+
+        self.zobrist_hash ^= self.hash_values[4 * 64 + 0 * 8 + 2]#Bishop
+        self.zobrist_hash ^= self.hash_values[4 * 64 + 0 * 8 + 5]
+        self.zobrist_hash ^= self.hash_values[5 * 64 + 7 * 8 + 2]
+        self.zobrist_hash ^= self.hash_values[5 * 64 + 0 * 8 + 5]
+
+        self.zobrist_hash ^= self.hash_values[6 * 64 + 0 * 8 + 0]#Rook
+        self.zobrist_hash ^= self.hash_values[6 * 64 + 0 * 8 + 7]
+        self.zobrist_hash ^= self.hash_values[7 * 64 + 7 * 8 + 0]
+        self.zobrist_hash ^= self.hash_values[7 * 64 + 7 * 8 + 7]
+
+        self.zobrist_hash ^= self.hash_values[8 * 64 + 0 * 8 + 3]#Queen
+        self.zobrist_hash ^= self.hash_values[9 * 64 + 7 * 8 + 3]
+
+        self.zobrist_hash ^= self.hash_values[10 * 64 + 0 * 8 + 4]#King
+        self.zobrist_hash ^= self.hash_values[11 * 64 + 7 * 8 + 4]
+
+
         pass
+
+    def update_hash(self, board, move):
+        print(move.from_square)
+        print(move.to_square)
+
 
     def get_move(self, board, depth):
         best_eval = -self.INFINITE
@@ -47,6 +81,8 @@ class AI_AlphaBeta:
 
             board.pop()
 
+
+        self.update_hash(board, move)
         return best_move
 
     def alphabeta(self, board, depth, alpha, beta):
